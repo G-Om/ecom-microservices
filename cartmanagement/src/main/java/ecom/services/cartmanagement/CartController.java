@@ -43,7 +43,11 @@ public class CartController {
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         }
     }
+    @DeleteMapping("/cart/{userId}/clear")
+    public void clearCart(@PathVariable Long userId) {
 
+        cartService.clearCart(userId);
+    }
 
 
 

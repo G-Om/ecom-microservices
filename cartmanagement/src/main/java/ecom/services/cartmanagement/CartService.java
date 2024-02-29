@@ -39,4 +39,11 @@ public class CartService {
     public void deleteCart(Long cartId) {
         cartRepository.deleteById(cartId);
     }
+
+    public void clearCart(Long userId) {
+        Cart cart = cartRepository.findByUserId(userId);
+        cart.productIdList = null;
+        cart.setTotal(0);
+        cartRepository.save(cart);
+    }
 }
