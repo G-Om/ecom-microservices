@@ -1,0 +1,42 @@
+Inter services calls to be made 
+
+From Orders Service TO 
+
+1. Cart Management:
+	purpose : To retrive the cart for a user
+	Url : localhost:8080/services/api/cm/cart?userId=12211
+	Type : GET request
+
+	Returns : {
+	 	   	"id": 1,
+	    		"userId": 12211,
+	    		"productIdList": [
+	        		12,
+	        		23,
+	        		43,
+	        		54
+	    			],
+	    		"total": 2323,
+		    	"lastEdited": null,
+	    		"status": "ACTIVE",
+	    		"shippingAddress": null
+		}
+
+	OR returns null if user not found
+
+
+2. Cart Management
+	
+	purpose: to clear the cart 
+	Url: localhost:8080/services/api/cm/cart/12211/clear
+	Type: Delete
+	Returns: void
+3. Products Manegement
+	purpose: to update stock 
+	Url : localhost:8080/services/api/pm/products/quantity
+	Type: Put
+	Body:     {
+     		   "id": 1,
+		"quantity": 10
+		}
+	

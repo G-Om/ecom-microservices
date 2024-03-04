@@ -1,13 +1,19 @@
 package ecom.services.cartmanagement;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CartService {
+
+    RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
     private CartRepository cartRepository;
@@ -28,7 +34,30 @@ public class CartService {
         Cart currentCart = cartRepository.findById(cartId).orElse(null);
         if (currentCart == null)
             return null;
+
+        //TODO: check availability of the products specified in the products list
+        List<Integer> quantities =
+        products.stream().map(
+                (productId)-> {
+                    // Make a call to productmanagement for each product and check its availability
+                    // Do not add if unavailable
+                    return restTemplate.getForObject("http://localhost:8082/services/api/pm/products/quantity?productId="+productId, Integer.class);
+                }
+        ).toList();
+
+        for (int i =0; i< products.size();i++) {
+            if (quantities.get(i) == 0 ) {
+                Long remove = products.remove(i);
+                System.out.println("Element has zero quantity : "+ remove);
+            }
+        }
         currentCart.setProductIdList(products);
+
+        //TODO: Update the Quantity of each product in product management (later do optimize)
+        for (Long productId : products) {
+                // TODO: make a call to update quantity of each product
+                restTemplate.getForObject("http://localhost:8082/services/api/pm/products/quantity/"+ productId+"?quantity=1", Void.class);
+                }
         return cartRepository.save(currentCart);
     }
 

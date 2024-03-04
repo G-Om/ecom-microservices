@@ -35,6 +35,9 @@ public class ProductService {
     }
 
     public Optional<Product> getProductById(long userId) {
+       // Optional<Product> product=productRepository.findById(userId);
+
+
         return productRepository.findById(userId);
     }
 }
