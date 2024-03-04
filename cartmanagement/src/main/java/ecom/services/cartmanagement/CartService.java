@@ -35,6 +35,7 @@ public class CartService {
         if (currentCart == null)
             return null;
 
+        // Microservices Call
         //TODO: check availability of the products specified in the products list
         List<Integer> quantities =
         products.stream().map(
