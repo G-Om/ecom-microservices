@@ -29,9 +29,11 @@ public class CartController {
     public Cart getCartForUser(@RequestParam Long userId) {
         return cartService.getCartByUserId(userId);
     }
-    @PutMapping("/cart/{cartId}")
-    public Cart addProductsToCart(@PathVariable Long cartId, @RequestBody Cart cart) {
-        return cartService.addToCart(cartId, cart.getProductIdList());
+    @PutMapping("/cart/{userId}")
+    public Cart addProductsToCart(@PathVariable Long userId, @RequestBody Cart cart) {
+
+
+        return cartService.addToCart(userId, cart.getProductIdList());
     }
 
     @DeleteMapping("/cart/{cartId}")

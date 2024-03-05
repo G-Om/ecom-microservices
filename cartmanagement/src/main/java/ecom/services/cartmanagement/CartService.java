@@ -30,8 +30,8 @@ public class CartService {
         return cartRepository.findById(cartId);
     }
 
-    public Cart addToCart(Long cartId, List<Long> products) {
-        Cart currentCart = cartRepository.findById(cartId).orElse(null);
+    public Cart addToCart(Long userId, List<Long> products) {
+        Cart currentCart = cartRepository.findByUserId(userId);
         if (currentCart == null)
             return null;
 
