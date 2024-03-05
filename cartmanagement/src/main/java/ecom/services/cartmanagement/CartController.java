@@ -36,8 +36,10 @@ public class CartController {
         return cartService.addToCart(userId, cart.getProductIdList());
     }
 
-    @DeleteMapping("/cart/{cartId}")
-    public ResponseEntity<String> deleteCart(@PathVariable Long cartId) {
+    @DeleteMapping("/cart/{userId}")
+    public ResponseEntity<String> deleteCart(@PathVariable Long userId) {
+
+        Long cartId = cartService.getCartByUserId(userId).getId();
         cartService.deleteCart(cartId);
         if (cartService.getCartByCartId(cartId).isEmpty()) {
             return new ResponseEntity<>("Deleted cart successfully!", HttpStatus.OK);

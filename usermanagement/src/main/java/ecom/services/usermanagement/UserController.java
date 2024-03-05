@@ -18,6 +18,9 @@ public class UserController {
 
     RestTemplate restTemplate = new RestTemplate();
 
+    private String createCartUrl = "http://localhost:8081/services/api/cm/cart";
+    private String deleteCartUrl = "http://localhost:8081/services/api/cm/cart/";
+
     @Autowired
     UserService userService;
 
@@ -38,7 +41,6 @@ public class UserController {
 
         //TODO: whenever a new user is added create a cart for him
         // Making a post request
-        String createCartUrl = "http://localhost:8081/services/api/cm/cart";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -67,7 +69,12 @@ public class UserController {
 
     @DeleteMapping
     public ResponseEntity<String> deleteUser(@RequestBody User user) {
+
         userService.deleteUserByObj(user);
+        // TODO: Make a REST call to Cart Service to delete the cart
+
+        restTemplate.delete(deleteCartUrl + user.getId(), String.class);
+
         return new ResponseEntity<>("Deleted user successfully!", HttpStatus.OK);
 
     }
